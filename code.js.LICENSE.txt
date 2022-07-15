@@ -1,0 +1,3 @@
+//! basic color style creation
+
+//! two basic color styles
