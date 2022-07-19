@@ -1,4 +1,5 @@
 // @ts-nocheck
+import testCons from "./src/test";
 
 //& load fonts
 const loadFonts = async () => {
@@ -117,7 +118,7 @@ function createStatusComponent(name, textColor, backgroundColor) {
   statusComponent.fillStyleId = backgroundColor.id;
   // statusComponent.resize(500, 68);
   statusComponent.cornerRadius = 50;
-  statusComponent.name = `.DS-status/${name}`;
+  statusComponent.name = `status=${name}`;
   statusComponent.constraints = {
     horizontal: "MIN",
     vertical: "MIN",
@@ -143,6 +144,7 @@ function createStatusComponent(name, textColor, backgroundColor) {
     family: "Inter",
     style: "Bold",
   };
+
   return statusComponent;
 }
 
@@ -167,6 +169,7 @@ const dsPrimaryColor = setColorStyle("ds-admin/Primary Color", "FC5000");
 const dsSecondaryColor = setColorStyle("ds-admin/Secondary Color", "08510D");
 const dsWhite = setColorStyle("ds-admin/White", "FFFFFF");
 const dsBlack = setColorStyle("ds-admin/Black", "000000");
+const dsDanger = setColorStyle("ds-admin/Danger", "A60404");
 
 //^ status color styles
 const pending = setColorStyle("ds-status/Pending", "9275FF");
@@ -176,13 +179,13 @@ const review = setColorStyle("ds-status/Review", "04C3FC");
 const tbd = setColorStyle("ds-status/TBD", "F5F6FA");
 const approved = setColorStyle("ds-status/Approved", "72EDBC");
 
+const pages = figma.root.children;
+const currentPage = figma.currentPage;
 const headerText = figma.createText();
-//^ async load fonts, then run rest of the code
+
 loadFonts()
   .then(() => {
-    const currentPage = figma.currentPage;
     const header = createHeader(currentPage, headerText);
-    const pages = figma.root.children;
 
     pages.forEach((node) => {
       if (!(node.name.startsWith("⎯") || node.name.startsWith("⋯"))) {
@@ -191,12 +194,13 @@ loadFonts()
         const frames = node.children.filter((node) => node.type === "FRAME");
 
         //& find admin page
-        if (node.name === "❖ .Admin components") {
+        if (node.name === "💀 .DO NOT TOUCH!!! - internal tools") {
           frames.forEach((frame) => {
             if (frame.name === node.name.replace(/[\W_]+/g, " ").trim()) {
               frame.appendChild(header);
               addTextProperty(header, headerText);
               header.children[0].characters = `${frame.name}`;
+              frame.fillStyleId = dsDanger.id;
             } else {
               const instance = header.createInstance();
               instance.children[0].characters = `${frame.name}`;
@@ -228,33 +232,34 @@ loadFonts()
 
     const statusInstance = statusPending.createInstance();
 
-    const adminComponentsPage = pages.filter(
-      (page) => page.name === "❖ .Admin components"
+    const internalToolsPage = pages.filter(
+      (page) => page.name === "💀 .DO NOT TOUCH!!! - internal tools"
     );
-    const adminFrame = adminComponentsPage[0].children[0];
-    const header = adminFrame.children[0];
 
-    adminFrame.appendChild(statusPending);
+    const internalToolsFrame = internalToolsPage[0].children[0];
+    const header = internalToolsFrame.children[0];
+
+    internalToolsFrame.appendChild(statusPending);
     statusPending.x = 200;
     statusPending.y = 400;
 
-    adminFrame.appendChild(statusInProgress);
+    internalToolsFrame.appendChild(statusInProgress);
     statusInProgress.x = 200;
     statusInProgress.y = 520;
 
-    adminFrame.appendChild(statusFixes);
+    internalToolsFrame.appendChild(statusFixes);
     statusFixes.x = 200;
     statusFixes.y = 640;
 
-    adminFrame.appendChild(statusReview);
+    internalToolsFrame.appendChild(statusReview);
     statusReview.x = 200;
     statusReview.y = 760;
 
-    adminFrame.appendChild(statusTBD);
+    internalToolsFrame.appendChild(statusTBD);
     statusTBD.x = 200;
     statusTBD.y = 880;
 
-    adminFrame.appendChild(statusApproved);
+    internalToolsFrame.appendChild(statusApproved);
     statusApproved.x = 200;
     statusApproved.y = 1000;
 
@@ -269,14 +274,9 @@ loadFonts()
         statusTBD,
         statusApproved,
       ],
-      adminFrame
+      internalToolsFrame
     );
-    // const defininions = status.variantGroupProperties;
-    // defininions["State"] = defininions["Property 1"];
-    // delete defininions["Property 1"];
-    // status.variantGroupProperties = defininions;
-    status.variantGroupProperties["State"] =
-      status.variantGroupProperties["Property 1"];
-    delete status.variantGroupProperties["Property 1"];
+    status.name = ".DS-status";
+    testCons()
   })
   .finally(() => figma.closePlugin());
