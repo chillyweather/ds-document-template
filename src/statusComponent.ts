@@ -1,5 +1,5 @@
 // @ts-nocheck
-import setColorStyle from "../src/colorStyles.ts"
+import setColorStyle from "../src/colorStyles.ts";
 //^ basic color styles
 const dsWhite = setColorStyle("ds-admin/White", "FFFFFF");
 const dsBlack = setColorStyle("ds-admin/Black", "000000");
@@ -113,4 +113,4 @@ function buildStatusComponents() {
   status.name = ".DS-status";
 }
 
-export { buildStatusComponents };
+export default buildStatusComponents;

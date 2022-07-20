@@ -1,6 +1,5 @@
 // @ts-nocheck
-import { buildStatusComponents } from "./src/statusComponent.ts";
-import setColorStyle from "./src/colorStyles.ts";
+import buildStatusComponents from "./src/statusComponent.ts";
 import buildFrames from "./src/frames.ts";
 
 //& load fonts

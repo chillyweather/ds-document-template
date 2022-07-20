@@ -1,6 +1,8 @@
 // @ts-nocheck
 
 import setColorStyle from "./colorStyles.ts";
+import { nameCleaner } from "./utils.ts";
+import { addTextProperty } from "./figmaUtils.ts";
 
 
 function createFrame(
@@ -16,10 +18,6 @@ function createFrame(
   frame.resize(xSize, ySize);
   frame.name = name;
   return frame;
-}
-//& remove non-alphanumeric symbols
-function nameCleaner(name) {
-  return name.replace(/[\W_]+/g, " ").trim();
 }
 
 //& create header component
@@ -62,13 +60,6 @@ function createFrames(page) {
   const qa = createFrame("QA", 3000, 3000, 3080, 0);
   const docs = createFrame("Documentation", 3000, 3000, 6160, 0);
   return [main, qa, docs];
-}
-
-function addTextProperty(component, textNode) {
-  component.appendChild(textNode);
-  component.addComponentProperty("text", "TEXT", `${component.parent.name}`);
-  const objName = Object.keys(component.componentPropertyDefinitions)[0];
-  textNode.componentPropertyReferences = { characters: `${objName}` };
 }
 
 //^ basic color styles
